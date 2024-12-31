@@ -3,6 +3,7 @@ package com.example.e_com.Service;
 
 import com.example.e_com.Model.Product;
 import com.example.e_com.Repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,5 +37,23 @@ public class ProductService {
         product.setImageData(imageFile.getBytes());
 
         return  productRepository.save(product);
+    }
+
+
+    public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
+        product.setImageName(imageFile.getOriginalFilename());
+        product.setImageType(imageFile.getContentType());
+        product.setImageData(imageFile.getBytes());
+
+        return  productRepository.save(product);
+    }
+
+    public void deleteProductById(int id) {
+       productRepository.deleteById(id);
+    }
+
+    @Transactional
+    public List<Product> searchProducts(String keyword) {
+       return productRepository.searchProducts(keyword);
     }
 }
